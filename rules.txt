@@ -1,0 +1,9 @@
+meta description
+site title
+block robot meta tag or not
+block robot.txt or not
+Whether flash content or not
+meta description is too long or not
+Heading tag
+Heading tags should be between 15 and 65 characters.
+URL is too long or not

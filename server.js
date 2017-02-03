@@ -6,21 +6,50 @@ var app     = express();
 
 app.get('/scrape', function(req, res){
     
-    url = 'http://travelogy.com/';
+    url = 'http://magdev.tripzilla.com/';
 
-    request(url, function(error, response, html){
+    request(url, function(error, response, body){
         if(!error){
-            var checking = cheerio.load(html);
-            var title, release, rating;
-            var json = { title : "", release : "", rating : ""};
+            // var checking = cheerio.load(html);
+            var title, description, rating;
+            var json = { title : "", description : "", rating : ""};
 
-            checking('title').filter(function(){
-                var data = checking(this);
-                console.log(data);
+            var $ = cheerio.load(body);
+
+            $('title').filter(function(){
+                var data = $(this);
                 title = data.text();
                 json.title = title;
-            })
-            console.log(json.title);            
+            });
+
+            var meta = $('meta')
+            var keys = Object.keys(meta)
+
+            console.log(keys);
+
+            var ogType;
+            var ogTitle;
+
+            keys.forEach(function(key){
+            if (  meta[key].attribs
+               && meta[key].attribs.property
+               && meta[key].attribs.property === 'og:type') {
+              ogType = meta[key].attribs.content;
+            }
+            });
+
+            keys.forEach(function(key){
+                if (  meta[key].attribs
+                   && meta[key].attribs.property
+                   && meta[key].attribs.property === 'og:title') {
+                  ogTitle = meta[key].attribs.content;
+                }
+            });
+
+            console.log(ogType);
+            console.log(ogTitle);
+
+            json.description = ogTitle;         
         }
         // fs.writeFile('output.html', checking, function(err){
         // console.log('File successfully written! - Check your project directory for the output.json file');
