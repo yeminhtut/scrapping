@@ -3,6 +3,44 @@ var fs      = require('fs');
 var request = require('request');
 var cheerio = require('cheerio');
 var app     = express();
+var webshot = require('webshot');
+
+app.get('/',function(req,res){
+    var webshot = require('webshot');
+    // var mobile_options = {
+    //   screenSize: {
+    //     width: 320,
+    //     height: 480
+    //   }, 
+    //   shotSize: {
+    //     width: 320, 
+    //     height: 736
+    //   }, userAgent: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_2 like Mac OS X; en-us)'
+    //     + ' AppleWebKit/531.21.20 (KHTML, like Gecko) Mobile/7B298g'
+    // };
+    var options = {
+      screenSize: {
+        width: 768,
+        height: 1024
+      }, 
+      shotSize: {
+        width: 768, 
+        height: 1024
+      }, userAgent: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_2 like Mac OS X; en-us)'
+        + ' AppleWebKit/531.21.20 (KHTML, like Gecko) Mobile/7B298g'
+    };
+
+    // webshot('https://tripzilla.sg/', 'tripzilla_mobile.png',mobile_options, function(err) {
+    //   // screenshot now saved to google.png
+    // });
+    webshot('https://tripzilla.sg/', 'tripzilla_tablet.png',options, function(err) {
+      // screenshot now saved to google.png
+    });
+    webshot('https://tripzilla.sg/', 'tripzilla_web.png', function(err) {
+      // screenshot now saved to google.png
+    });
+    res.send('done');
+});
 
 app.get('/scrape', function(req, res){
     
